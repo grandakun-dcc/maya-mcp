@@ -9,6 +9,23 @@ read_when:
 
 This is the implementation-facing architecture summary for Maya MCP.
 
+## Installed Extensions
+
+Maya MCP remains the only MCP server and commandPort owner. Optional tool
+packages extend that server through the Python Entry Point group
+`grandakun.maya_mcp.extensions`; installing or removing an adapter does not
+require a second client configuration.
+
+Each Entry Point name must match its extension ID and resolve to a callable
+that returns `maya_mcp.extensions.MayaMcpExtension`. Extensions declare their
+tool names before registration so Maya MCP can reject collisions and roll back
+partial registration. One broken extension is reported and skipped without
+preventing the base Maya tools from starting.
+
+Installed extensions are enabled by default. Set
+`DCC_MAYA_DISABLED_EXTENSIONS` to a comma-separated list of extension IDs for
+temporary isolation, for example `hairpin,openai_gen_maya`.
+
 Use it as the first source of truth when changing server wiring, module boundaries, or the separation between MCP wrappers, tool logic, and transport.
 
 ## Core Invariants

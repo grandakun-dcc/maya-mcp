@@ -35,6 +35,7 @@ if __name__ == "__main__" and (__package__ is None or __package__ == ""):
 from fastmcp import FastMCP
 
 from maya_mcp import __version__
+from maya_mcp.extensions import load_extensions
 from maya_mcp.registrars import register_all_tools
 from maya_mcp.tool_metadata import CLAUDE_DESKTOP_COMPAT_ENV_VAR, build_tool_title_transform
 
@@ -60,6 +61,7 @@ def create_server() -> FastMCP:
         website_url=SERVER_WEBSITE_URL,
     )
     register_all_tools(mcp)
+    load_extensions(mcp)
     mcp.add_transform(build_tool_title_transform(claude_desktop_compat=claude_desktop_compat))
     return mcp
 

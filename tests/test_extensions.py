@@ -238,3 +238,16 @@ def test_create_server_loads_extensions_after_base_tools(monkeypatch: Any) -> No
     server.create_server()
 
     assert len(observed_tool_names) == 71
+
+
+def test_create_server_can_skip_installed_extensions(monkeypatch: Any) -> None:
+    from maya_mcp import server
+
+    def fail_if_called(_mcp: FastMCP) -> tuple[()]:
+        raise AssertionError("installed extensions must not be loaded")
+
+    monkeypatch.setattr(server, "load_extensions", fail_if_called)
+
+    mcp = server.create_server(load_installed_extensions=False)
+
+    assert len(_tool_names(mcp)) == 71

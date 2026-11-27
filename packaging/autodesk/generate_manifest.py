@@ -8,9 +8,10 @@ import json
 import sys
 from pathlib import Path
 
-from maya_mcp.server import mcp
+from maya_mcp.server import create_server
 
 MANIFEST_PATH = Path(__file__).with_name("mcp-tool-manifest.json")
+mcp = create_server(load_installed_extensions=False)
 
 
 def _plain_language_description(description: str) -> str:

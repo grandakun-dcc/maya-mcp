@@ -8,10 +8,11 @@ import subprocess
 import sys
 from pathlib import Path
 
-from maya_mcp.server import mcp
+from maya_mcp.server import create_server
 
 REPOSITORY_ROOT = Path(__file__).parents[1]
 MANIFEST_PATH = REPOSITORY_ROOT / "packaging" / "autodesk" / "mcp-tool-manifest.json"
+mcp = create_server(load_installed_extensions=False)
 
 
 def test_autodesk_manifest_matches_live_tool_list() -> None:

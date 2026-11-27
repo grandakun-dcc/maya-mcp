@@ -150,7 +150,7 @@ def _list_tools() -> ListToolsResult:
     with patch.dict("os.environ", {"MAYA_MCP_CLAUDE_DESKTOP_COMPAT": "false"}):
         from maya_mcp.server import create_server
 
-        mcp = create_server()
+        mcp = create_server(load_installed_extensions=False)
 
     tools = [tool.to_mcp_tool() for tool in asyncio.run(mcp.list_tools())]
     return ListToolsResult(nextCursor=None, tools=tools)
@@ -180,7 +180,7 @@ def test_claude_desktop_compat_exposes_safe_tool_aliases() -> None:
     with patch.dict("os.environ", {"MAYA_MCP_CLAUDE_DESKTOP_COMPAT": "true"}):
         from maya_mcp.server import create_server
 
-        mcp = create_server()
+        mcp = create_server(load_installed_extensions=False)
 
     tools = [tool.to_mcp_tool() for tool in asyncio.run(mcp.list_tools())]
     names = {tool.name for tool in tools}

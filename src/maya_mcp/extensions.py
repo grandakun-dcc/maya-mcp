@@ -135,9 +135,7 @@ def load_extensions(
                 raise TypeError("extension Entry Point must resolve to a callable")
             extension = factory()
         except Exception as exc:  # Extension import failures are intentionally isolated.
-            results.append(
-                _failure(entry_point, entry_point.name, f"load: {type(exc).__name__}")
-            )
+            results.append(_failure(entry_point, entry_point.name, f"load: {type(exc).__name__}"))
             continue
 
         if not isinstance(extension, MayaMcpExtension):
@@ -158,9 +156,7 @@ def load_extensions(
             )
             continue
         if extension.id in seen_extension_ids:
-            results.append(
-                _failure(entry_point, extension.id, "validate: duplicate extension id")
-            )
+            results.append(_failure(entry_point, extension.id, "validate: duplicate extension id"))
             continue
         seen_extension_ids.add(extension.id)
 
@@ -175,9 +171,7 @@ def load_extensions(
         try:
             snapshot = _component_store(mcp).copy()
         except RuntimeError as exc:
-            results.append(
-                _failure(entry_point, extension.id, f"register: {type(exc).__name__}")
-            )
+            results.append(_failure(entry_point, extension.id, f"register: {type(exc).__name__}"))
             continue
         before = _tool_map(snapshot)
         if set(extension.tool_names).intersection(before):
@@ -188,9 +182,7 @@ def load_extensions(
             extension.register(mcp)
         except Exception as exc:  # Extension registration failures are intentionally isolated.
             _restore_components(mcp, snapshot)
-            results.append(
-                _failure(entry_point, extension.id, f"register: {type(exc).__name__}")
-            )
+            results.append(_failure(entry_point, extension.id, f"register: {type(exc).__name__}"))
             continue
 
         after = _tool_map(_component_store(mcp))
